@@ -1,0 +1,43 @@
+<?php
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="zajecia")
+ */
+class Zajecia
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Grupa", inversedBy="zajecia")
+     * @ORM\JoinColumn(name="grupa_id", referencedColumnName="id")
+     */
+    protected $grupa;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Przedmiot", inversedBy="zajecia")
+     * @ORM\JoinColumn(name="przedmiot_id", referencedColumnName="id")
+     */
+    protected $przedmiot;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Teacher", inversedBy="zajecia")
+     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+     */
+    protected $teacher;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ZajeciaStudent", mappedBy="zajecia")
+     */
+    protected $zajeciastudent;
+    
+ 
+}

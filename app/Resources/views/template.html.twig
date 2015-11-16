@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+
+		<div class = "header">
+
+			<div class = "logo">
+			SERWIS Z OCENAMI
+			</div>		
+							
+			<div class = "signOutBox">
+			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				Zalogowany jako:<br/> 					
+				{% if is_granted('ROLE_ADMIN') %}
+				Admin<br/>
+				{% else %}
+				{{ app.user.name }} {{ app.user.surname }}
+				{% endif %}
+				<a href="/logout">[Wyloguj się]</a>	
+			{% endif %}
+			</div>		
+				<div style="clear:both;"></div>
+			</div>
+			
+			<div class = "menu"></div>
+
+		<div class = "content">
+		{% block content %}
+			
+		{% endblock %}
+		</div>
+
+	</div>
+{% endblock %}
+
+
+

@@ -3,7 +3,83 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+           	
+		<style>
+			body
+			{
+				background-color: #303030;
+				color: white;
+				font-family: 'Lato', sans-serif;
+				margin: 0 !important;		
+			}
+			
+			.container
+			{
+				width:100%;		
+			}
+			
+			.logowanieBox
+			{
+				width: 200px;
+				height: 120px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 200px;
+				border: 2px solid white;
+				border-radius: 10px;
+				padding: 10px;
+			}	
+			
+			.header
+			{
+				margin-top: 10px;
+				width: 1024px;
+				height: 120px;
+				margin-left: auto;
+				margin-right: auto;
+			}		
+			
+			.logo
+			{
+				width: 800px;
+				height: 100px;
+				float: left;
+				text-align: center;
+				line-height: 100px;
+				font-size: 48px;
+			}		
+			
+			.signOutBox
+			{
+				width: 140px;
+				height: 60px;
+				float: left;
+				border: 2px solid white;
+				border-radius: 10px;
+				display:table-cell;
+				vertical-align: middle;
+				padding: 10px;
+			}	
+			
+			.menu
+			{ 
+				width: 100%;
+				height: 30px;
+				background-color: #c34f4f;
+			}
+			
+			.content
+			{ 
+				width: 1024px;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 10px;
+			}
+		
+		</style>      	
+        	
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>

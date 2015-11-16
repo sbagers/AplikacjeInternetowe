@@ -4,24 +4,13 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        chain_provider:
-            chain:
-                providers: [in_memory, student_provider, teacher_provider]          
         in_memory:
             memory: 
                 users:
                     admin:
                         password: admin
                         roles: 'ROLE_ADMIN'
-        student_provider:
-            entity:
-                class: AppBundle:Student
-                property: login
-        teacher_provider:
-            entity:
-                class: AppBundle:Teacher
-                property: login
-            
+              
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -37,27 +26,15 @@ security:
 
             form_login:
                 login_path: /login
-                check_path: /login_check       
-                always_use_default_target_path: true
-                use_referer: true
-                default_target_path: default_security_target
+                check_path: /login_check
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
               
             logout:
                 path:   /logout
-                target: /login
-                
-            provider: chain_provider
+                target: /
            
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/student, roles: ROLE_STUDENT }
-        - { path: ^/teacher, roles: ROLE_TEACHER }
         
     encoders:
-        Symfony\Component\Security\Core\User\User: 
-            algorithm: plaintext
-        AppBundle\Entity\Student:
-            algorithm: plaintext
-        AppBundle\Entity\Teacher:
-            algorithm: plaintext
+        Symfony\Component\Security\Core\User\User: plaintext

@@ -1,0 +1,267 @@
+<?php 
+// src/AppBundle/Entity/Teacher.php
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * @ORM\Table(name="teacher")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\UserRepository")
+ */
+class Teacher implements UserInterface, \Serializable
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
+    private $login;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $name;
+    
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $surname;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Zajecia", mappedBy="teacher")
+     */
+    protected $zajecia;
+    
+    
+    public function __construct()
+    {
+    	$this->isActive = true;
+    	// may not be needed, see section on salt below
+    	// $this->salt = md5(uniqid(null, true));
+    }
+    
+    public function getUsername()
+    {
+    	return $this->login;
+    }
+    
+    public function getSalt()
+    {
+    	// you *may* need a real salt depending on your encoder
+    	// see section on salt below
+    	return null;
+    }
+    
+    public function getPassword()
+    {
+    	return $this->password;
+    }
+    
+    public function getRoles()
+    {
+    	return array('ROLE_TEACHER');
+    }
+    
+    public function eraseCredentials()
+    {
+    }
+    
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+    	return serialize(array(
+    			$this->id,
+    			$this->login,
+    			$this->password,
+    			// see section on salt below
+    			// $this->salt,
+    	));
+    }
+    
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->id,
+    			$this->login,
+    			$this->password,
+    			// see section on salt below
+    			// $this->salt
+    			) = unserialize($serialized);
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set login
+     *
+     * @param string $login
+     *
+     * @return Teacher
+     */
+    public function setLogin($login)
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * Get login
+     *
+     * @return string
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Teacher
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Teacher
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set surname
+     *
+     * @param string $surname
+     *
+     * @return Teacher
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * Get surname
+     *
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * Add teacher
+     *
+     * @param \AppBundle\Entity\Zajecia $teacher
+     *
+     * @return Teacher
+     */
+    public function addTeacher(\AppBundle\Entity\Zajecia $teacher)
+    {
+        $this->teacher[] = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * Remove teacher
+     *
+     * @param \AppBundle\Entity\Zajecia $teacher
+     */
+    public function removeTeacher(\AppBundle\Entity\Zajecia $teacher)
+    {
+        $this->teacher->removeElement($teacher);
+    }
+
+    /**
+     * Get teacher
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
+    }
+
+    /**
+     * Add zajecium
+     *
+     * @param \AppBundle\Entity\Zajecia $zajecium
+     *
+     * @return Teacher
+     */
+    public function addZajecium(\AppBundle\Entity\Zajecia $zajecium)
+    {
+        $this->zajecia[] = $zajecium;
+
+        return $this;
+    }
+
+    /**
+     * Remove zajecium
+     *
+     * @param \AppBundle\Entity\Zajecia $zajecium
+     */
+    public function removeZajecium(\AppBundle\Entity\Zajecia $zajecium)
+    {
+        $this->zajecia->removeElement($zajecium);
+    }
+
+    /**
+     * Get zajecia
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getZajecia()
+    {
+        return $this->zajecia;
+    }
+}

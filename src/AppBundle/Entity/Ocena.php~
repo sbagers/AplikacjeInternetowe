@@ -1,0 +1,35 @@
+<?php
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="ocena")
+ */
+class Ocena
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $wartosc;
+    
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $komentarz;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ZajeciaStudent", inversedBy="ocena")
+     * @ORM\JoinColumn(name="zajeciastudent_id", referencedColumnName="id")
+     */
+    protected $zajeciastudent;
+ 
+}
