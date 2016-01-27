@@ -27,6 +27,11 @@ class Przedmiot
     protected $zajecia;
     
     /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -100,5 +105,29 @@ class Przedmiot
     public function getZajecia()
     {
         return $this->zajecia;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Przedmiot
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

@@ -1,0 +1,9 @@
+{{ naglowek }}	
+<br/>
+<select name="{{ var }}">
+	<option value="dowolnie">dowolnie</option>
+	{% for opt in x %}
+		<option value="{{ opt['id'] }}">{{ opt['nazwa'] }}</option>
+	{% endfor %}
+</select>
+

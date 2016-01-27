@@ -33,4 +33,108 @@ class ZajeciaStudent
      */
     protected $ocena;
     
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ocena = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set zajecia
+     *
+     * @param \AppBundle\Entity\Zajecia $zajecia
+     *
+     * @return ZajeciaStudent
+     */
+    public function setZajecia(\AppBundle\Entity\Zajecia $zajecia = null)
+    {
+        $this->zajecia = $zajecia;
+
+        return $this;
+    }
+
+    /**
+     * Get zajecia
+     *
+     * @return \AppBundle\Entity\Zajecia
+     */
+    public function getZajecia()
+    {
+        return $this->zajecia;
+    }
+
+    /**
+     * Set student
+     *
+     * @param \AppBundle\Entity\Student $student
+     *
+     * @return ZajeciaStudent
+     */
+    public function setStudent(\AppBundle\Entity\Student $student = null)
+    {
+        $this->student = $student;
+
+        return $this;
+    }
+
+    /**
+     * Get student
+     *
+     * @return \AppBundle\Entity\Student
+     */
+    public function getStudent()
+    {
+        return $this->student;
+    }
+
+    /**
+     * Add ocena
+     *
+     * @param \AppBundle\Entity\Ocena $ocena
+     *
+     * @return ZajeciaStudent
+     */
+    public function addOcena(\AppBundle\Entity\Ocena $ocena)
+    {
+        $this->ocena[] = $ocena;
+
+        return $this;
+    }
+
+    /**
+     * Remove ocena
+     *
+     * @param \AppBundle\Entity\Ocena $ocena
+     */
+    public function removeOcena(\AppBundle\Entity\Ocena $ocena)
+    {
+        $this->ocena->removeElement($ocena);
+    }
+
+    /**
+     * Get ocena
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOcena()
+    {
+        return $this->ocena;
+    }
 }

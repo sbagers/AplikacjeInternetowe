@@ -26,6 +26,11 @@ class FormaZajec
      */
     protected $grupa;
     
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
 
     /**
      * Constructor
@@ -101,5 +106,29 @@ class FormaZajec
     public function getGrupa()
     {
         return $this->grupa;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return FormaZajec
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

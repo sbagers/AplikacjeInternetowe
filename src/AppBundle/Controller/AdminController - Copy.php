@@ -445,10 +445,20 @@ class AdminController extends Controller
     {
     	$conn = $this->get('database_connection');
     	
-    	$przedmioty = $conn->fetchAll('SELECT * FROM przedmiot WHERE active=1');
-    	$prowadzacy = $conn->fetchAll('SELECT * FROM teacher WHERE active=1');
-    	$grupa = $conn->fetchAll('SELECT * FROM grupa WHERE active=1');
+    	$przedmioty = $conn->fetchAll('SELECT * FROM przedmiot');
+    	$prowadzacy = $conn->fetchAll('SELECT * FROM teacher');
+    	$grupa = $conn->fetchAll('SELECT * FROM grupa');
     	  	
+    	$sql = sprintf
+    	(
+			'SELECT g.nazwa as grupaNazwa, t.name as nameProwadzacy, t.surname as surnameProwadzacy, p.nazwa as przedmiotNazwa, z.id as zajecia_id
+    			FROM grupa as g, teacher as t, przedmiot as p, zajecia as z
+    		 WHERE g.id = z.grupa_id
+    		   AND t.id = z.teacher_id
+    		   AND p.id = z.przedmiot_id
+    		   AND z.active = 1'
+    	);
+    	
     	$zajecia = $conn->fetchAll
     	(
 			'SELECT g.nazwa as grupaNazwa, t.name as nameProwadzacy, t.surname as surnameProwadzacy, p.nazwa as przedmiotNazwa, z.id as zajecia_id
@@ -456,8 +466,7 @@ class AdminController extends Controller
     		 WHERE g.id = z.grupa_id
     		   AND t.id = z.teacher_id
     		   AND p.id = z.przedmiot_id
-    		   AND z.active = 1
-    		 ORDER BY p.nazwa'
+    		   AND z.active = 1'
     	);
     	
     	$nieaktywneZajecia = $conn->fetchAll
@@ -490,117 +499,17 @@ class AdminController extends Controller
     	$przedmiot_id = $request->request->get('przedmiot_id');	
     	$prowadzacy_id = $request->request->get('prowadzacy_id');
     	
-    	$sql = sprintf(
-    			'SELECT id 
-    			 FROM zajecia 
-    			WHERE grupa_id=%s
-    			  AND przedmiot_id=%s
-    			  AND teacher_id=%s',
-    			$grupa_id,$przedmiot_id,$prowadzacy_id);
-    	$zajecieIstnieje = $conn->fetchColumn($sql);
-    	
-    	if($zajecieIstnieje)
-    	{
-    		$this->addFlash(
-    				'notice',
-    				'Takie zajęcia już ten prowadzący prowadzi!'
-    				);
-    	}
-    	else
-    	{
-    		 	
-	    	$sql = sprintf('INSERT INTO zajecia SET grupa_id ="%s", przedmiot_id="%s", teacher_id="%s", active=1',$grupa_id, $przedmiot_id, $prowadzacy_id);
-	    	$conn->query($sql);
-	    		
-	    	$this->addFlash(
-	    			'notice',
-	    			'Dodano zajęcia!'
-	    			);
-    	}
-    	
-    	return $this->redirectToRoute('admin_zajecia');
-    }
-    
-    /**
-     * @Route("/admin/usunZajecia")
-     */
-    public function usunZajecia(Request $request)
-    {
-    	$conn = $this->get('database_connection');
-    	$zajecia_id= $request->request->get('id');
-    
-    	$sql = sprintf('UPDATE zajecia SET active=0 WHERE id="%s"',$zajecia_id);
+    	$sql = sprintf('INSERT INTO zajecia SET grupa_id ="%s", przedmiot_id="%s", teacher_id="%s", active=1',$grupa_id, $przedmiot_id, $prowadzacy_id);
     	$conn->query($sql);
-    
+    		
     	$this->addFlash(
     			'notice',
-    			'Usunięto zajęcia!'
+    			'Dodano zajęcia!'
     			);
-    
+    	
     	return $this->redirectToRoute('admin_zajecia');
     }
     
-    /**
-     * @Route("/admin/usunPernametnieZajecia")
-     */
-    public function usunPernametnieZajecia(Request $request)
-    {
-    	$conn = $this->get('database_connection');
-    	$zajecia_id= $request->request->get('id');
-      	
-    	$sql = sprintf('SELECT id FROM zajeciastudent WHERE zajecia_id="%s"',$zajecia_id);
-    	$zajeciastudentow = $conn->fetchAll($sql);
-    	
-    	$max = sizeof($zajeciastudentow);  	
-    	$sql = 'DELETE FROM ocena';
-		for($i=0;$i<$max;$i++)
-		{
-			if($i==0)
-			{
-				$sql = $sql." WHERE zajeciastudent_id =".$zajeciastudentow[$i]['id'];
-			}
-			else
-			{
-				$sql = $sql." OR zajeciastudent_id =".$zajeciastudentow[$i]['id'];
-			}
-		}
-    	$conn->query($sql);
-    	
-    	$sql = sprintf('DELETE FROM zajeciastudent WHERE zajecia_id="%s"',$zajecia_id);
-    	$conn->query($sql);
-    	
-    	$sql = sprintf('DELETE FROM zajecia WHERE id="%s"',$zajecia_id);
-    	$conn->query($sql);
-    
-    	$this->addFlash(
-    			'notice',
-    			'Usunięto zajęcie!'
-    			);
-    
-    	return $this->redirectToRoute('admin_zajecia');
-    }
-    
-    /**
-     * @Route("/admin/przywrocZajecie")
-     */
-    public function przywrocZajecie(Request $request)
-    {
-    	$conn = $this->get('database_connection');
-    	$zajecia_id= $request->request->get('id');
-    
-    	$sql = sprintf('UPDATE zajecia SET active=1 WHERE id="%s"',$zajecia_id);
-    	$conn->query($sql);
-    
-    	$this->addFlash(
-    			'notice',
-    			'Przywrócono zajęcie!'
-    			);
-    
-    	return $this->redirectToRoute('admin_zajecia');
-    }
-    
-    
-      
     /**
      * @Route("/admin/zajeciaStudenci", name="admin_zajeciaStudenci")
      */
@@ -614,6 +523,7 @@ class AdminController extends Controller
     	$grupaNazwa = $request->request->get('grupaNazwa');
     	$przedmiotNazwa = $request->request->get('przedmiotNazwa');
     		
+    	
     	$sql = sprintf
     	(
     		'SELECT zs.id as zajeciastudent_id, s.name as nameStudent, s.surname as surnameStudent, s.id as student_id
@@ -622,6 +532,7 @@ class AdminController extends Controller
     			AND zs.zajecia_id = "%s"',$zajecia_id
    		);	
     	$studenci = $conn->fetchAll($sql);
+    	
   	
     	$sql = 'SELECT s.name, s.surname, s.id FROM student s'; 
 		$max = sizeof($studenci);
@@ -672,28 +583,6 @@ class AdminController extends Controller
 		], 307);
     }
     
-    /**
-     * @Route("/admin/usunZajecieStudenta")
-     */
-    public function usunZajecieStudenta(Request $request)
-    {
-    	$conn = $this->get('database_connection');
-    	$zajeciastudent_id = $request->request->get('zajeciastudent_id');
-    	
-    	$sql = sprintf('DELETE FROM ocena WHERE zajeciastudent_id="%s"',$zajeciastudent_id);	
-    	$conn->query($sql);
-    	
-    	$sql = sprintf('DELETE FROM zajeciastudent WHERE id="%s"',$zajeciastudent_id);
-    	$conn->query($sql);
-
-    	$this->addFlash(
-    			'notice',
-    			'Usunięto zajęcie studenta!'
-    			);
     
-		return $this->redirectToRoute('admin_zajeciaStudenci', [
-				'request' => $request
-		], 307);
-    }
-    
+  
 }

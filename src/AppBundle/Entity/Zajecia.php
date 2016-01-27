@@ -39,6 +39,11 @@ class Zajecia
      */
     protected $zajeciastudent;
     
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
  
     /**
      * Constructor
@@ -162,5 +167,29 @@ class Zajecia
     public function getZajeciastudent()
     {
         return $this->zajeciastudent;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Zajecia
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

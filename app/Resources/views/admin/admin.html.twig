@@ -1,5 +1,34 @@
 {% extends 'template.html.twig' %}
 
+
+{% block menu %}
+<div class="menu_content">
+	<a href ="/admin/prowadzacy">
+		<div class="option">Prowadzący</div>
+	</a>
+	<a href ="/admin/studenci">
+		<div class="option">Studenci</div>
+	</a>
+	<a href ="/admin/przedmioty">
+		<div class="option">Przedmioty</div>
+	</a>
+	
+	{# 
+	<a href ="/admin/formyZajec">
+		<div class="option">Formy zajęć</div>
+	</a>
+	#}
+	
+	<a href ="/admin/grupy">
+		<div class="option">Grupy</div>
+	</a>
+	<a href ="/admin/zajecia">
+		<div class="option">Zajęcia</div>
+	</a>
+		<div style="clear:both;"></div>
+</div>
+{% endblock %}
+
 {% block content %}
     
 

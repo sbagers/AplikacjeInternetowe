@@ -1,0 +1,47 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Przedmioty</td>
+		<td></td>
+	</tr>
+	
+	{% for p in przedmiot %}
+		<tr>
+			<td>{{ p['nazwa'] }}</td>
+			<td>
+				<form action="/admin/usunPrzedmiot" method="post">
+					<input type="hidden" name="id" value="{{ p['id'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>	
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj przedmiot:
+<form action="/admin/dodajPrzedmiot" method="post">
+	nazwa: <input type="text" name ="nazwa" required/><br/>
+	<input type="submit" value="Dodaj">
+</form>
+
+{% if nieaktywnePrzedmioty %}
+	Przywróć przedmiot:
+	<form action="/admin/przywrocPrzedmiot" method="post">
+		<select name = "id">
+		{% for p in nieaktywnePrzedmioty %}
+			<option value="{{ p['id'] }}">
+				{{ p['nazwa'] }} 
+			</option>
+		{% endfor %}
+		</select>
+		<input type="submit" value="Przywróć">
+	</form>
+{% endif %}
+
+		
+{% endblock %}
+
+

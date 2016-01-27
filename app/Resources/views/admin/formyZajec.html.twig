@@ -1,0 +1,33 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Forma zajęć</td>
+		<td></td>
+	</tr>
+	
+	{% for f in forymZajec %}
+		<tr>
+			<td>{{ f['nazwa'] }}</td>
+			<td>
+				<form action="/admin/usunFormeZajec" method="post">
+					<input type="hidden" name="id" value="{{ f['id'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj formę zajęć:
+<form action="/admin/dodajFormeZajec" method="post">
+	nazwa: <input type="text" name ="nazwa" required/><br/>
+	<input type="submit" value="Dodaj">
+</form>
+
+
+{% endblock %}
+
+

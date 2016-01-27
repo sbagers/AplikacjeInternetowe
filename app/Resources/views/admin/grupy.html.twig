@@ -1,0 +1,57 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Grupa</td>
+		<td>Forma zajęć</td>
+		<td></td>
+	</tr>
+	
+	{% for g in grupy %}
+		<tr>
+			<td>{{ g['grupaNazwa'] }}</td>
+			<td>{{ g['formaNazwa'] }}</td>
+			<td>
+				<form action="/admin/usunGrupe" method="post">
+					<input type="hidden" name="id" value="{{ g['grupaId'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>	
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj grupę:
+<form action="/admin/dodajGrupe" method="post">
+	Typ:
+	<select name = "forma">
+	{% for f in formy %}
+		<option value="{{ f['id'] }}">
+			{{ f['nazwa'] }}
+		</option>
+	{% endfor %}
+	</select>
+	<input type="submit" value="Dodaj">
+</form>
+
+{% if nieaktywneGrupy %}
+	Przywróć grupe:
+	<form action="/admin/przywrocGrupe" method="post">
+		<select name = "id">
+		{% for g in nieaktywneGrupy %}
+			<option value="{{ g['grupaId'] }}">
+				{{ g['grupaNazwa'] }}
+			</option>
+		{% endfor %}
+		</select>
+		<input type="submit" value="Przywróć">
+	</form>
+{% endif %}
+
+
+		
+{% endblock %}
+
+

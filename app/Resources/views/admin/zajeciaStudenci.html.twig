@@ -1,0 +1,57 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+{{ przedmiotNazwa }}    
+{{ nameProwadzacy}} {{ surnameProwadzacy }}
+{{ grupaNazwa }}
+
+   
+<table>
+	<tr>
+		<td>Studenci</td>
+		<td></td>
+	</tr>
+	
+	{% for s in studenci %}
+		<tr>
+			<td>{{ s['nameStudent'] }} {{ s['surnameStudent'] }}</td>
+			<td>
+				<form action="/admin/usunZajecieStudenta" method="post">
+					<input type="hidden" name = "zajecia_id" value="{{ zajecia_id }}">
+					<input type="hidden" name = "nameProwadzacy" value="{{ nameProwadzacy }}">
+					<input type="hidden" name = "surnameProwadzacy" value="{{ surnameProwadzacy }}">
+					<input type="hidden" name = "grupaNazwa" value="{{ grupaNazwa }}">
+					<input type="hidden" name = "nameProwadzacy" value="{{ nameProwadzacy }}">
+					<input type="hidden" name = "przedmiotNazwa" value="{{ przedmiotNazwa }}">			
+					<input type="hidden" name = "zajeciastudent_id" value="{{ s['zajeciastudent_id'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>	
+		</tr>
+	{% endfor %}
+</table>
+
+{% if studenciKtorzyNie %}
+	<form action="/admin/dodajZajecieStudenta" method="post">
+		Dodaj studenta:
+		<select name = "student_id">
+			{% for ss in studenciKtorzyNie %}
+				<option value="{{ ss['id'] }}">
+					{{ ss['name'] }} {{ ss['surname'] }}
+				</option>
+			{% endfor %}
+		</select>
+		<input type="hidden" name = "zajecia_id" value="{{ zajecia_id }}">
+		<input type="hidden" name = "nameProwadzacy" value="{{ nameProwadzacy }}">
+		<input type="hidden" name = "surnameProwadzacy" value="{{ surnameProwadzacy }}">
+		<input type="hidden" name = "grupaNazwa" value="{{ grupaNazwa }}">
+		<input type="hidden" name = "nameProwadzacy" value="{{ nameProwadzacy }}">
+		<input type="hidden" name = "przedmiotNazwa" value="{{ przedmiotNazwa }}">
+		<input type="submit" value="Dodaj">
+	</form>
+{% endif %}
+
+{% endblock %}
+
+

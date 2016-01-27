@@ -1,0 +1,34 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+
+{{ przedmiot }}
+{{ grupa }}
+
+<table>
+	<tr>
+		<td>Student</td>
+		<td></td>
+	</tr>
+	
+	{% for s in studenci %}
+		<tr>
+			<td>{{ s['name'] }} {{ s['surname'] }}</td>
+			<td>
+				<form action="/teacher/student" method="post">
+					<input type="hidden" name="name" value="{{ s['name'] }}">
+					<input type="hidden" name="surname" value="{{ s['surname'] }}">
+					<input type="hidden" name="id_zajeciastudent" value="{{ s['id'] }}">
+					<input type="submit" value="Oceny">
+				</form>
+			</td>	
+		</tr>
+	{% endfor %}
+	
+</table>
+
+
+{% endblock %}
+
+

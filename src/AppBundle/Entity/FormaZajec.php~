@@ -26,6 +26,11 @@ class FormaZajec
      */
     protected $grupa;
     
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
 
     /**
      * Constructor

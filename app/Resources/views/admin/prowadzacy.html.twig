@@ -1,0 +1,51 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Prowadzacy</td>
+		<td></td>
+	</tr>
+	
+	{% for p in prowadzacy %}
+		<tr>
+			<td>{{ p['name'] }} {{ p['surname'] }}</td>
+			<td>
+				<form action="/admin/usunProwadzacy" method="post">
+					<input type="hidden" name="name" value="{{ p['name'] }}">
+					<input type="hidden" name="surname" value="{{ p['surname'] }}">
+					<input type="hidden" name="id" value="{{ p['id'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>	
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj prowadzącego:
+<form action="/admin/dodajProwadzacego" method="post">
+	login: <input type="text" name ="login" required/><br/>
+	hasło: <input type="text" name ="haslo" required/><br/>
+	Imię: <input type="text" name ="imie" required/><br/>
+	Nazwisko: <input type="text" name ="nazwisko" required/><br/>
+	<input type="submit" value="Dodaj">
+</form>
+
+{% if nieaktywniProwadzacy %}
+	Przywróć prowadzącego:
+	<form action="/admin/przywrocProwadzacego" method="post">
+		<select name = "teacher_id">
+		{% for p in nieaktywniProwadzacy %}
+			<option value="{{ p['id'] }}">
+				{{ p['name'] }} {{ p['surname'] }}
+			</option>
+		{% endfor %}
+		</select>
+		<input type="submit" value="Przywróć">
+	</form>
+{% endif %}
+	
+{% endblock %}
+
+

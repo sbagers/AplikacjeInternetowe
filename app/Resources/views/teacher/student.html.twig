@@ -1,0 +1,46 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+{{ name }}
+{{ surname }}
+
+<table>
+	<tr>
+		<td>Ocena</td>
+		<td>Komentarz</td>
+		<td></td>
+	</tr>
+	
+	{% for c in oceny %}
+		<tr>
+			<td> {{ c['wartosc'] }} </td>
+			<td> {{ c['komentarz'] }}</td>
+			<td>
+				<form action="/teacher/usun" method="post">
+					<input type="hidden" name="name" value="{{ name }}">
+					<input type="hidden" name="surname" value="{{ surname }}">
+					<input type="hidden" name="id_zajeciastudent" value="{{ id_zajeciastudent }}">
+					<input type="hidden" name="id" value="{{ c['id'] }}">
+					<input type="submit" value="Usuń">
+				</form>
+			</td>
+		</tr>
+		
+	{% endfor %}
+	
+</table>
+
+<form action="/teacher/dodaj" method="post">
+	Ocena: <input type="number" name ="wartosc" min="2" max="5" step="0.5" required/><br/>
+	Komentarz: <input type="text" name ="komentarz" maxlength="24" required/><br/>
+	<input type="hidden" name="name" value="{{ name }}">
+	<input type="hidden" name="surname" value="{{ surname }}">
+	<input type="hidden" name="id_zajeciastudent" value="{{ id_zajeciastudent }}">
+	<input type="submit" value="Dodaj ocenę">
+</form>
+	
+
+{% endblock %}
+
+

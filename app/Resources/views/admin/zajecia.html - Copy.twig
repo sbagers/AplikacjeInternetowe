@@ -1,0 +1,66 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Przedmiot</td>
+		<td>Prowadzący</td>
+		<td>Grupa</td>
+		<td></td>
+	</tr>
+	
+	{% for z in zajecia %}
+		<tr>
+			<td>{{ z['przedmiotNazwa'] }}</td>
+			<td>{{ z['name'] }} {{ z['surname'] }}</td>
+			<td>{{ z['grupaNazwa']}}</td>
+			<td>
+				<form action="/admin/studenci" method="post">
+					<input type="hidden" name="id" value="{{ z['id'] }}">
+					<input type="submit" value="Studenci">
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj zajęcie:
+<form action="/admin/dodajZajecie" method="post">
+	
+	Przedmiot: 
+	<select name = "przedmiot_id">
+	{% for p in przedmioty %}
+		<option value="{{ p['id'] }}">
+			{{ p['nazwa'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	Prowadzący: 
+	<select name = "prowadzacy_id">
+	{% for p in prowadzacy %}
+		<option value="{{ p['id'] }}">
+			{{ p['name'] }} {{ p['surname'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	Grupa: 
+	<select name = "grupa_id">
+	{% for g in grupa %}
+		<option value="{{ g['id'] }}">
+			{{ g['nazwa'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	<input type="submit" value="Dodaj">
+	
+</form>
+
+
+
+{% endblock %}
+
+

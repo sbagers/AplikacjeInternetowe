@@ -23,8 +23,17 @@
 				<div style="clear:both;"></div>
 			</div>
 			
-			<div class = "menu"></div>
-
+			<div class = "menu">
+			{% block menu %}
+			{% endblock %}
+		</div>
+		
+		{% for flash_message in app.session.flashbag.get('notice') %}
+    		<div class="flash-notice">
+        		{{ flash_message }}
+    		</div>
+		{% endfor %}
+			
 		<div class = "content">
 		{% block content %}
 			

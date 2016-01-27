@@ -1,0 +1,109 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block content %}
+    
+<table>
+	<tr>
+		<td>Przedmiot</td>
+		<td>Prowadzący</td>
+		<td>Grupa</td>
+		<td></td>
+		<td></td>
+	</tr>
+	
+	{% for z in zajecia %}
+		<tr>
+			<td>{{ z['przedmiotNazwa'] }}</td>
+			<td>{{ z['nameProwadzacy'] }} {{ z['surnameProwadzacy'] }}</td>
+			<td>{{ z['grupaNazwa']}}</td>
+						<td>
+				<form action="/admin/usunZajecia" method="post">
+					<input type="hidden" name="id" value="{{ z['zajecia_id'] }}">					
+					<input type="submit" value="Usun">
+				</form>
+			</td>
+			<td>
+				<form action="/admin/zajeciaStudenci" method="post">
+					<input type="hidden" name="zajecia_id" value="{{ z['zajecia_id'] }}">
+					<input type="hidden" name="nameProwadzacy" value="{{ z['nameProwadzacy'] }}">
+					<input type="hidden" name="surnameProwadzacy" value="{{ z['surnameProwadzacy'] }}">
+					<input type="hidden" name="grupaNazwa" value="{{ z['grupaNazwa'] }}">
+					<input type="hidden" name="przedmiotNazwa" value="{{ z['przedmiotNazwa'] }}">	
+					<input type="submit" value="Studenci">
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+Dodaj zajęcie:
+<form action="/admin/dodajZajecie" method="post">
+	
+	Przedmiot: 
+	<select name = "przedmiot_id">
+	{% for p in przedmioty %}
+		<option value="{{ p['id'] }}">
+			{{ p['nazwa'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	Prowadzący: 
+	<select name = "prowadzacy_id">
+	{% for p in prowadzacy %}
+		<option value="{{ p['id'] }}">
+			{{ p['name'] }} {{ p['surname'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	Grupa: 
+	<select name = "grupa_id">
+	{% for g in grupa %}
+		<option value="{{ g['id'] }}">
+			{{ g['nazwa'] }}
+		</option>
+	{% endfor %}
+	</select>
+	
+	<input type="submit" value="Dodaj">
+	
+</form>
+
+{% if nieaktywneZajecia %}
+	<table>
+		<tr>
+			<td>Przedmiot</td>
+			<td>Prowadzący</td>
+			<td>Grupa</td>
+			<td></td>
+			<td></td>
+		</tr>
+		
+		{% for z in nieaktywneZajecia %}
+			<tr>
+				<td>{{ z['przedmiotNazwa'] }}</td>
+				<td>{{ z['nameProwadzacy'] }} {{ z['surnameProwadzacy'] }}</td>
+				<td>{{ z['grupaNazwa']}}</td>
+				<td>
+					<form action="/admin/usunPernametnieZajecia" method="post">
+						<input type="hidden" name="id" value="{{ z['zajecia_id'] }}">					
+						<input type="submit" value="Usuń pernametnie">
+					</form>
+				</td>
+				<td>
+					<form action="/admin/przywrocZajecie" method="post">
+						<input type="hidden" name="id" value="{{ z['zajecia_id'] }}">					
+						<input type="submit" value="Przywróć">
+					</form>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endif %}
+
+
+
+{% endblock %}
+
+

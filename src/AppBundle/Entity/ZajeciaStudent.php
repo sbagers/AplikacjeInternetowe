@@ -34,6 +34,11 @@ class ZajeciaStudent
     protected $ocena;
     
     /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -131,5 +136,29 @@ class ZajeciaStudent
     public function getOcena()
     {
         return $this->ocena;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return ZajeciaStudent
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

@@ -1,12 +1,56 @@
 {% extends 'template.html.twig' %}
 
 {% block content %}
-    
-    {#
-    {% for zajecie in zajecia %}
-		{{ zajecie.id }}		
+
+<form action="/teacher" method="post">
+	<div class="select_box">
+		{% set vars = 
+		{
+			'naglowek':'Wybierz przedmiot', 
+			'x':dostepnePrzedmoty,
+			'var':"przedmiot"
+		} 
+		%}
+		{% include 'wyszukiwarka.html.twig' with vars %}
+	</div>
+	
+	<div class="select_box">
+		{% set vars = 
+		{
+			'naglowek':'Wybierz formę zajęć', 
+			'x':dostepneFormy,
+			'var':"forma"
+		} 
+		%}
+		{% include 'wyszukiwarka.html.twig' with vars %}
+	</div>
+	<div style="clear:both;"></div>
+	
+	<input type="submit" value="Pokaż">
+</form>
+
+<table>
+	<tr>
+		<td>Przedmiot</td>
+		<td>Grupa</td>
+		<td></td>
+	</tr>
+	{% for z in zajecia %}
+		<tr>
+			<td> {{ z['przedmiot_nazwa'] }} </td>
+			<td> {{ z['grupa_nazwa'] }} </td>
+			<td>
+				<form action="/teacher/studenci" method="post">
+					<input type="hidden" name="id_zajecia" value="{{ z['id'] }}">
+					<input type="hidden" name="przedmiot" value="{{ z['przedmiot_nazwa'] }}">
+					<input type="hidden" name="grupa" value="{{ z['grupa_nazwa']  }}">
+					<input type="submit" value="Studenci">
+				</form>
+			</td>	
+		</tr>
 	{% endfor %}
-	#}
+</table>
+	
 
 {% endblock %}
 

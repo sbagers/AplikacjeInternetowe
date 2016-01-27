@@ -4,12 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table(name="student")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\UserRepository")
  */
-class Student implements UserInterface, \Serializable
+class Student implements AdvancedUserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -37,6 +38,11 @@ class Student implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=60)
      */
     private $surname;
+    
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
     
     /**
      * @ORM\OneToMany(targetEntity="ZajeciaStudent", mappedBy="student")
@@ -84,6 +90,7 @@ class Student implements UserInterface, \Serializable
     			$this->id,
     			$this->login,
     			$this->password,
+    			$this->active,
     			// see section on salt below
     			// $this->salt,
     	));
@@ -96,10 +103,32 @@ class Student implements UserInterface, \Serializable
     			$this->id,
     			$this->login,
     			$this->password,
+    			$this->active,
     			// see section on salt below
     			// $this->salt
     			) = unserialize($serialized);
     }
+    
+    public function isAccountNonExpired()
+    {
+    	return true;
+    }
+    
+    public function isAccountNonLocked()
+    {
+    	return true;
+    }
+    
+    public function isCredentialsNonExpired()
+    {
+    	return true;
+    }
+    
+    public function isEnabled()
+    {
+    	return $this->active;
+    }
+    
 
     /**
      * Get id
@@ -229,5 +258,53 @@ class Student implements UserInterface, \Serializable
     public function getZajeciastudent()
     {
         return $this->zajeciastudent;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Student
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Student
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

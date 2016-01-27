@@ -1,0 +1,26 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+
+{{ przedmiotNazwa }}
+{{ grupaNazwa }}
+{{ imieProwadzacy }}
+{{ nazwiskoProwadzacy }}
+
+<table>
+	<tr>
+		<td>Ocena</td>
+		<td>Komentarz</td>
+	</tr>
+	
+	{% for o in oceny %}
+		<tr>
+			<td>{{ o['wartosc'] }}</td>
+			<td>{{ o['komentarz'] }}</td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
+
+

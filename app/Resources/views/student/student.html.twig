@@ -2,11 +2,32 @@
 
 {% block content %}
     
-<div class = "content">
-		student		
-		{{ grupa.nazwa }}
-		{{ grupa.getFormazajec().nazwa }}		
-</div>
+<table>
+	<tr>
+		<td>Przedmiot</td>
+		<td>Grupa</td>
+		<td>Prowadzący</td>
+		<td></td>
+	</tr>
+	
+	{% for z in zajeciaStudenta %}
+		<tr>
+			<td>{{ z['przedmiotNazwa'] }}</td>
+			<td>{{ z['grupaNazwa'] }}</td>
+			<td>{{ z['imieProwadzacy'] }} {{ z['nazwiskoProwadzacy'] }}</td>
+			<td>
+				<form action="/student/oceny" method="post">
+					<input type="hidden" name="przedmiotNazwa" value="{{ z['przedmiotNazwa'] }}">
+					<input type="hidden" name="grupaNazwa" value="{{ z['grupaNazwa'] }}">
+					<input type="hidden" name="imieProwadzacy" value="{{ z['imieProwadzacy'] }}">
+					<input type="hidden" name="nazwiskoProwadzacy" value="{{ z['nazwiskoProwadzacy'] }}">
+					<input type="hidden" name="idZajeciaStudent" value="{{ z['idZajeciaStudent'] }}">
+					<input type="submit" value="Oceny">
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
 
 {% endblock %}
 

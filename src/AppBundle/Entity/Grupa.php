@@ -31,6 +31,11 @@ class Grupa
      * @ORM\OneToMany(targetEntity="Zajecia", mappedBy="grupa")
      */
     protected $zajecia;
+    
+    /**
+     * @ORM\Column(name="active", type="boolean")
+     */
+    protected $active;
 
   
     /**
@@ -131,5 +136,29 @@ class Grupa
     public function getZajecia()
     {
         return $this->zajecia;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Grupa
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }
